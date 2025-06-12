@@ -1,0 +1,31 @@
+# npm install -i typescript --save-dev
+# npm tsc --init
+
+* adicionar isso ao tsconfig.json
+tsconfig {
+"incremental": true,
+"outDir": "./dist"
+"include":["src/**/*.ts"]
+}
+# npm install tslint --save-dev
+# npx tslint --init
+
+# npm i sequelize reflect-metadata sequelize-typescript
+# npm i sqlite3
+
+* libs de configuracao de teste automatizado
+# npm install -D jest @types/jest ts-node --save-dev
+# npm install -D @swc/jest @swc/cli @swc/core
+* inciar o jest (cria arquivo de configuracao do JEST)
+# npx jest --init
+* apos a geracao do arquivo adicionar
+por isso
+  transform:{
+    '^.+\\.(t|j)sx?$': '@swc/jest',
+  },
+ # caso no package.json tenha criado um scrips colar esse script la 
+"scripts":{
+        "test":"jest"
+}
+#ajuda no erros de typescript (vai no scripts do package.json)
+"test":"node_modules/.bin/tsc --noEmit && jest",
