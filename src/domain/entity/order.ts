@@ -15,6 +15,20 @@ export default class Order {
         this.validate_order();
     }
 
+    get id(){
+        return this._id;
+    }
+    get total(){
+        return this._total;
+    }
+
+    get items(){
+        return this._items;
+    }
+
+    get customer_id(){
+        return this._customer_id;
+    }
     validate_order(): boolean{
      
         if(this._id.length === 0){
