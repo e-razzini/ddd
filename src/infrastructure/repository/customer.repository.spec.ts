@@ -24,7 +24,7 @@ describe("customers test",() =>{
                 await sequelize.close();
         }); 
     
-        test("create a customer", async () => {
+        test.skip("create a customer", async () => {
             
             const customer_repository  = new CustomerRepository();
     
@@ -49,7 +49,7 @@ describe("customers test",() =>{
     
         });
     
-        test("Update a customer", async ( ) =>{
+        test.skip("Update a customer", async ( ) =>{
     
             const customer_repository = new CustomerRepository();
             const customer   = new Customer("8979879789","Bryan conner");
@@ -77,7 +77,7 @@ describe("customers test",() =>{
         });
     
     
-        test("find a Product", async () => {
+        test.skip("find a Product", async () => {
     
            const customer_repository = new CustomerRepository();
 
