@@ -33,7 +33,7 @@ describe("Order repository test",() =>{
                 await sequelize.close();
         }); 
     
-        test("create a Order", async () => {
+        test.skip("create a Order", async () => {
 
             const customer_repository = new CustomerRepository(); 
             const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
@@ -76,31 +76,76 @@ describe("Order repository test",() =>{
     
         });
     
-        test.skip("Update a customer", async ( ) =>{
+        test("Update a order", async ( ) =>{
     
-            const customer_repository = new CustomerRepository();
-            const customer   = new Customer("8979879789","Bryan conner");
-            const address    = new Address("Rua dos Palmares","328","Florida","Estados Unidos da America");
+            const customer_repository = new CustomerRepository(); 
+            const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
+            const address   = new Address("Rua do Virgilho","328","Sao Gonçalo","Brasil");
             customer.setAddress(address);
             await customer_repository.create(customer);
 
-            customer.changeName("Bryan o Conner");
-            await customer_repository.updated(customer);
+            const address_novo = new Address("Rua do Virgilho","328","Sao Gonçalo","Brasil");
+
+            customer.setAddress(address_novo);
+
+            const product_repository = new ProductRepository();
+            const product = new Product("3215327536721","Notebook AVEL 2036",15000.00)
+            await product_repository.create(product);
+
+            const orderItem = new OrderItem(customer.id,product.describle,product.price,product.id,2);
+
+            const order_repositore =new OrderRepository();
+            const order  = new Order("2763213",customer.id,[orderItem]);
+            await order_repositore.create(order);
     
-            const product_model_updated = await customerModel.findOne({where :{id:customer.id}});
+            const order_model = await OrderModel.findOne({
+                where :{id: order.id},
+                include:["items"],
+            });
 
             
-            expect(product_model_updated.toJSON()).toStrictEqual({
-                id:           customer.id,
-                name:         customer.name,
-                active:       customer.IsActive(),
-                rewardPoints: customer.rewardPoints,
-                zip_code:     customer.address.zip_code,
-                city :        customer.address.city,
-                street:       customer.address.street,
-                country:      customer.address.country
+            expect(order_model.toJSON()).toStrictEqual({
+                customer_id:  customer.id,
+                id:           order.id,
+                total:        order.total,
+                items:[{
+                    id         :orderItem.id,
+                    name       :orderItem.name,
+                    quantity   :orderItem.quantity,
+                    order_id   :order.id,
+                    product_id :product.id,
+                    price      :orderItem.price,
+                   
+                 }
+                ]
             });
-    
+
+            const orderItem_02 =new OrderItem(customer.id,product.describle,product.price,product.id,3);
+            const order_2  = new Order("2763213",customer.id,[orderItem_02]);
+            await order_repositore.updated(order_2);
+
+
+            const order_model_2 = await OrderModel.findOne({
+                where :{id: order_2.id},
+                include:["items"],
+            });
+
+
+            expect(order_model_2.toJSON()).toStrictEqual({
+                customer_id:  customer.id,
+                id:           order.id,
+                total:        order_2.total,
+                items:[{
+                    id         :orderItem_02.id,
+                    name       :orderItem_02.name,
+                    quantity   :orderItem_02.quantity,
+                    order_id   :order_2.id,
+                    product_id :product.id,
+                    price      :orderItem_02.price,
+                   
+                 }
+                ]
+            });
         });
     
     
