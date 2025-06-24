@@ -26,16 +26,47 @@ export default class OrderRepository {
              }
             );
         }
-        /*
-
+        
         async updated(entity:Order):Promise<void>{
+
+            await OrderModel.update({
+              customer_id  :entity.customer_id,
+              total        :entity.total
+            },{
+              where :{ id:entity.id}
+            }
+          );
+
+          await OrderItemModel.destroy({
+            where:{order_id:entity.id}
+          });
+
+          const newItem = entity.items.map((item) =>({
+            id:         item.id,
+            order_id:   entity.id,
+            name:       item.name,
+            price:      item.price,
+            product_id: item.product_id,
+            quantity:   item.quantity
+          }));
+          
+          await OrderItemModel.bulkCreate(newItem);
+          
+          
+          //try {
+          //} catch (error) {
+          //  console.log("ERROR BULKCRESTE", error)
+          //}
         }
-
+        
+        /*
         async find(id:string):Promise<Order>{
-
+          
         }
 
         async find_all():Promise<Order[]>{
-        }*/
+
+        }
+        */
 
 }
