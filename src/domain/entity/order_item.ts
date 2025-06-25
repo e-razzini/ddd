@@ -5,6 +5,7 @@ export default class OrderItem {
     private _quantity   :number;
     private _name       :string;
     private _price      :number;
+    private _total      :number;
 
     constructor(id:string,name:string,price:number,product_id:string,qddt:number){
         this._id         = id;
@@ -12,6 +13,7 @@ export default class OrderItem {
         this._price      = price;
         this._product_id = product_id;
         this._quantity   = qddt;
+        this._total      = this.total();
         this.validate_order_item()
     }
 
@@ -20,7 +22,7 @@ export default class OrderItem {
     }
 
     get price () {
-        return this._price * this._quantity;
+        return this._price;
     }
     get id(){
         return this._id;   
@@ -33,6 +35,10 @@ export default class OrderItem {
         return this._quantity;   
     }
 
+    total(): number {
+
+        return this._price * this._quantity;
+    }
     validate_order_item(){
 
         if(this._quantity <= 0){ throw new Error("Quantidade de item e Zero");}
