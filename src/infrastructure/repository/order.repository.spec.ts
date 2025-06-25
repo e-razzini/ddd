@@ -33,7 +33,7 @@ describe("Order repository test",() =>{
                 await sequelize.close();
         }); 
     
-        test.skip("create a Order", async () => {
+        test("create a Order", async () => {
 
             const customer_repository = new CustomerRepository(); 
             const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
@@ -149,42 +149,89 @@ describe("Order repository test",() =>{
         });
     
     
-        test.skip("find a Product", async () => {
+        test("find a order", async () => {
     
-           const customer_repository = new CustomerRepository();
+            const customer_repository = new CustomerRepository(); 
+            const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
+            const address   = new Address("Rua do Virgilho","328","Sao Gonçalo","Brasil")
+            customer.setAddress(address);
+            await customer_repository.create(customer);
 
-           const customer   = new Customer("287372213827","Joaquim Teixeira");
-           const address    = new Address("Rua dos natchos","823","California","Estados Unidos da America");
-           customer.setAddress(address);
-           await customer_repository.create(customer);
+            const product_repository = new ProductRepository();
+            const product = new Product("3215327536721","Notebook AVEL 2036",15000.00)
+            await product_repository.create(product);
 
-           const customer_repository_result = await customerModel.findOne({where :{id:customer.id}});
+            const orderItem = new OrderItem("276214875498",product.describle,product.price,product.id,2);
 
-           expect(customer_repository_result.toJSON()).toStrictEqual({
-                   id:        customer.id,
-                name:         customer.name,
-                active:       customer.IsActive(),
-                rewardPoints: customer.rewardPoints,
-                zip_code:     customer.address.zip_code,
-                city :        customer.address.city,
-                street:       customer.address.street,
-                country:      customer.address.country
-           });
+            const order_repositore =new OrderRepository();
+            const order  = new Order("2763213",customer.id,[orderItem]);
+            await order_repositore.create(order);
+
+            const order_model = await OrderModel.findOne({
+                where :{
+                    id:"2763213"
+                } ,
+                include:["items"],
+            });
+
+            expect(order_model.toJSON()).toStrictEqual({
+                customer_id    : customer.id,
+                id             : order.id,
+                total          : order.total,
+                items:[{
+                    id         :orderItem.id,
+                    name       :orderItem.name,
+                    quantity   :orderItem.quantity,
+                    order_id   :order.id,
+                    product_id :product.id,
+                    price      :orderItem.price,
+                   
+                 }
+                ]
+            });
+
+            
     
         });
     
-        test.skip("find all Product", async () => {
+        test("find all Product", async () => {
     
-           const prodRepository    = new CustomerRepository();
-           const product           = new Customer("123","Mouse Logitecht");
-           await prodRepository.create(product);
-    
-           const product_2   = new Customer("456","Mouse Asus");
-           await prodRepository.create(product_2);
+            const customer_repository = new CustomerRepository(); 
+            const product_repository  = new ProductRepository();
+            const order_repositore    = new OrderRepository();
 
-           const all_products = await prodRepository.find_all();
-           const products     =[product,product_2];
-           expect(products).toEqual(all_products);
+            const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
+            const address   = new Address("Rua do Virgilho","328","Sao Gonçalo","Brasil");
+            customer.setAddress(address);
+            await customer_repository.create(customer);
+
+            const product = new Product("3215327536721","Notebook AVEL 2036",1500.00)
+            await product_repository.create(product);
+            
+            const orderItem = new OrderItem("276214875498",product.describle,product.price,product.id,2);
+            
+            const order  = new Order("2763213",customer.id,[orderItem]);
+            await order_repositore.create(order);
+            
+            const customer_1  = new Customer("214786146382313","Capivara do Heave METAaaAAaaAAaAAaaL");
+            const address_1   = new Address("Rua do Matagal","328","Sao Gonçalo","Brasil");
+            customer_1.setAddress(address_1);
+            await customer_repository.create(customer_1);
+            
+            const product_1 = new Product("312","Notebook AVEL 1036",4500.00)
+            await product_repository.create(product_1);
+            
+            const orderItem_1 = new OrderItem("27613213214875498",product_1.describle,product_1.price,product_1.id,2);
+            
+            const order_1  = new Order("3214323",customer_1.id,[orderItem_1]);
+            await order_repositore.create(order_1);
+
+
+           const all_order_repository     =  await order_repositore.find_all();
+           const all_ordens     =[order,order_1];
+
+
+           expect(all_order_repository).toEqual(all_ordens);
     
         });
 });
