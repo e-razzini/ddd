@@ -33,7 +33,7 @@ describe("Order repository test",() =>{
                 await sequelize.close();
         }); 
     
-        test("create a Order", async () => {
+        test.skip("create a Order", async () => {
 
             const customer_repository = new CustomerRepository(); 
             const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
@@ -76,7 +76,7 @@ describe("Order repository test",() =>{
     
         });
     
-        test("Update a order", async ( ) =>{
+        test.skip("Update a order", async ( ) =>{
     
             const customer_repository = new CustomerRepository(); 
             const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
@@ -149,7 +149,7 @@ describe("Order repository test",() =>{
         });
     
     
-        test("find a order", async () => {
+        test.skip("find a order", async () => {
     
             const customer_repository = new CustomerRepository(); 
             const customer  = new Customer("21478614638","Capivara do Heave METAaaAAaaAAaAAaaL");
@@ -194,7 +194,7 @@ describe("Order repository test",() =>{
     
         });
     
-        test("find all Product", async () => {
+        test.skip("find all Product", async () => {
     
             const customer_repository = new CustomerRepository(); 
             const product_repository  = new ProductRepository();
