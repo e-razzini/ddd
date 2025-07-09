@@ -61,6 +61,13 @@ export default class Customer {
     this._address = address;
   }
 
+  getAddress(): Address {
+    if(this._address === undefined){
+      throw new Error("Endereço e obrigatorio.");
+    }
+    return this._address;
+  }
+
   AddRewardPoints(points:number) : number {
     return this._rewardPoints += points ; 
   }
