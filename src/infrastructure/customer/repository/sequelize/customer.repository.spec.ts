@@ -77,7 +77,7 @@ describe("customers test",() =>{
         });
     
     
-        test("find a Product", async () => {
+        test("find a Customer", async () => {
     
            const customer_repository = new CustomerRepository();
 
@@ -101,7 +101,7 @@ describe("customers test",() =>{
     
         });
     
-        test("find all Product", async () => {
+        test("find all customers", async () => {
     
            const customerRepository    = new CustomerRepository();
            const customer           = new Customer("123","Joao da silva");
@@ -116,7 +116,7 @@ describe("customers test",() =>{
 
            const all_customers = await customerRepository.find_all();
            const customers     =[customer,customer_2];
-           expect(JSON.stringify(all_customers)).toEqual(JSON.stringify(customers));
+           expect(all_customers).toEqual(customers);
     
         });
 });
