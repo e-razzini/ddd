@@ -1,5 +1,6 @@
-import Customer from "../../../../domain/customer/entity/customer";
-import customerModel from "./customer.model";
+import customerModel               from "./customer.model";
+import Customer                    from "../../../../domain/customer/entity/customer";
+import Address                     from "../../../../domain/customer/value-object/address";
 import CustomerRepositoryInterface from "../../../../domain/customer/repository/customer-repository.interface";
 
 export default class CustomerRepository implements CustomerRepositoryInterface  {
@@ -36,8 +37,18 @@ export default class CustomerRepository implements CustomerRepositoryInterface  
         }
 
         async find_all():Promise<Customer[]>{
-            const allProductModel = await customerModel.findAll();
-            return allProductModel.map((element) => new Customer(element.id,element.name));
+            const allCustomerModel = await customerModel.findAll();
+            
+             return allCustomerModel.map((element) =>{ 
+                const customer =  new Customer(element.id,element.name);
+                const address =   new Address(element.street,element.zip_code,element.city,element.country);
+                customer.setAddress(address);
+                return customer;
+            });
+
+             
+
+
         }
 
 }
